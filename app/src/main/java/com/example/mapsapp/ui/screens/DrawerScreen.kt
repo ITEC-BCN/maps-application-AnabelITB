@@ -78,7 +78,7 @@ fun DrawerScreen(logout: () -> Unit) {
                     )
                 }
                 TextButton(onClick = { //Me pones un 10
-                }) { Text("Apruébame Dani🤙") }
+                }) { Text("Dame un 10 Dani🤙") }
                 Column(
                     Modifier
                         .fillMaxSize()
