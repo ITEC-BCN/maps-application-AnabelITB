@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Marcador(
-    val id : Int = 0,
+    val id: Int = 0,
     val name: String,
     val descripcion: String,
     val image: String,

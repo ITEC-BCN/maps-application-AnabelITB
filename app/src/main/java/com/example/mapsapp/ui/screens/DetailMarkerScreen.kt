@@ -48,7 +48,7 @@ import coil.compose.rememberAsyncImagePainter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun DetailMarkerScreen(modifier : Modifier, id: Int, navigateBack: () -> Unit){
+fun DetailMarkerScreen(modifier: Modifier, id: Int, navigateBack: () -> Unit) {
     var viewModel: MyViewModel = viewModel()
     viewModel.getStudent(id)
     val title by viewModel.markerName.observeAsState("")
@@ -89,7 +89,7 @@ fun DetailMarkerScreen(modifier : Modifier, id: Int, navigateBack: () -> Unit){
 
         OutlinedTextField(
             value = description,
-            onValueChange = { viewModel.editMarkerDescript(it)},
+            onValueChange = { viewModel.editMarkerDescript(it) },
             label = { Text("Descripción") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -126,7 +126,7 @@ fun DetailMarkerScreen(modifier : Modifier, id: Int, navigateBack: () -> Unit){
         }
         Spacer(modifier = Modifier.height(24.dp))
 
-        if(bitmap != null){
+        if (bitmap != null) {
             Image(
                 bitmap = bitmap!!.asImageBitmap(),
                 contentDescription = null,
@@ -135,8 +135,7 @@ fun DetailMarkerScreen(modifier : Modifier, id: Int, navigateBack: () -> Unit){
                     .clip(RoundedCornerShape(16.dp)),
                 contentScale = ContentScale.Crop
             )
-        }
-        else {
+        } else {
             Image(
                 painter = rememberAsyncImagePainter(model = imagen),
                 contentDescription = title,
@@ -149,7 +148,7 @@ fun DetailMarkerScreen(modifier : Modifier, id: Int, navigateBack: () -> Unit){
 
         Spacer(modifier = Modifier.height(24.dp))
         Button(onClick = {
-            viewModel.updateMarker(id,title,description, bitmap)
+            viewModel.updateMarker(id, title, description, bitmap)
             navigateBack()
         }) {
             Text("Guardar Marcador")

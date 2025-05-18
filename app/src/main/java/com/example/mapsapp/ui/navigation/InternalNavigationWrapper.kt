@@ -17,30 +17,29 @@ import com.example.mapsapp.ui.screens.MarkerListScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun InternalNavigationWrapper(navController: NavHostController, modifier: Modifier){
-    NavHost(navController, Mapa){
+fun InternalNavigationWrapper(navController: NavHostController, modifier: Modifier) {
+    NavHost(navController, Mapa) {
         composable<Mapa> {
-            MapScreen(){ latitud, longitud ->
+            MapScreen() { latitud, longitud ->
                 navController.navigate(MarkerCreation(latitud, longitud))
             }
         }
         composable<Marcadores> {
-            MarkerListScreen(modifier){ id->
+            MarkerListScreen(modifier) { id ->
                 navController.navigate(MarkerDetail(id))
             }
         }
         composable<MarkerCreation> { backStrackEntry ->
             val coordenadas = backStrackEntry.toRoute<MarkerCreation>()
-            CreateMarkerScreen(modifier,coordenadas.latitud, coordenadas.longitud){
+            CreateMarkerScreen(modifier, coordenadas.latitud, coordenadas.longitud) {
                 navController.popBackStack()
             }
         }
         composable<MarkerDetail> { backStrackEntry ->
-            val id =  backStrackEntry.toRoute<MarkerDetail>()
-            DetailMarkerScreen(modifier,id.id) {
+            val id = backStrackEntry.toRoute<MarkerDetail>()
+            DetailMarkerScreen(modifier, id.id) {
                 navController.popBackStack()
             }
-
         }
     }
 }

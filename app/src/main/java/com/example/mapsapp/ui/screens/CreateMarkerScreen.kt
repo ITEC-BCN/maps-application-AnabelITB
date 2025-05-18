@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -37,6 +38,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
+import androidx.core.graphics.scale
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.mapsapp.viewmodels.MyViewModel
@@ -44,7 +46,12 @@ import java.io.File
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CreateMarkerScreen(modifier: Modifier, latitud: Double, longitud: Double, navigateBack: () -> Unit) {
+fun CreateMarkerScreen(
+    modifier: Modifier,
+    latitud: Double,
+    longitud: Double,
+    navigateBack: () -> Unit
+) {
     var viewModel: MyViewModel = viewModel()
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
@@ -52,19 +59,46 @@ fun CreateMarkerScreen(modifier: Modifier, latitud: Double, longitud: Double, na
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
     var showDialog by remember { mutableStateOf(false) }
-    val takePictureLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-            if (success && imageUri != null) {
-                val stream = context.contentResolver.openInputStream(imageUri!!)
-                bitmap = BitmapFactory.decodeStream(stream)
-            }
-        }
+
     val pickImageLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
                 imageUri = it
                 val stream = context.contentResolver.openInputStream(it)
                 bitmap = BitmapFactory.decodeStream(stream)
+            }
+        }
+    val takePictureLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success && imageUri != null) {
+                val stream = context.contentResolver.openInputStream(imageUri!!)
+                stream?.use { // Decodificar el flujo a un Bitmap
+                    val originalBitmap = BitmapFactory.decodeStream(it)
+
+                    // Obtener las dimensiones originales de la imagen
+                    val originalWidth = originalBitmap.width
+                    val originalHeight = originalBitmap.height
+                    // Definir el aspect ratio (relación entre ancho y alto)
+                    val aspectRatio = originalWidth.toFloat() / originalHeight.toFloat()
+
+                    // Establecer el tamaño máximo que deseas para la imagen (por ejemplo, un ancho máximo)
+                    val maxWidth = 800
+                    // Puedes establecer el valor que prefieras
+                    // Calcular el nuevo ancho y alto manteniendo el aspect ratio
+                    val newWidth = maxWidth
+                    val newHeight = (newWidth / aspectRatio).toInt()
+
+                    // Redimensionar el bitmap mientras se mantiene el aspect ratio
+                    val resizedBitmap = originalBitmap.scale(newWidth, newHeight)
+
+                    // Establecer el Bitmap redimensionado en el ViewModel
+//                    viewModel.setImagenBitMap(resizedBitmap)
+                    bitmap = resizedBitmap
+                } ?: run {
+                    Log.e("TakePicture", "Error al abrir InputStream para la URI de la imagen.")
+                }
+            } else {
+                Log.e("TakePicture", "La imagen no fue tomada o la URI de la imagen es nula.")
             }
         }
     Column(
@@ -132,7 +166,7 @@ fun CreateMarkerScreen(modifier: Modifier, latitud: Double, longitud: Double, na
         }
         Spacer(modifier = Modifier.height(24.dp))
         Button(onClick = {
-            viewModel.insertNewMarker(title,description, bitmap,latitud,longitud)
+            viewModel.insertNewMarker(title, description, bitmap, latitud, longitud)
             navigateBack()
         }) {
             Text("Guardar Marcador")

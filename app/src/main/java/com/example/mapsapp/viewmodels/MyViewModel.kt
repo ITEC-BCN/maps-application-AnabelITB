@@ -63,8 +63,8 @@ class MyViewModel : ViewModel() {
         }
     }
 
-    fun getStudent(id: Int){
-        if(_selectedMark == null){
+    fun getStudent(id: Int) {
+        if (_selectedMark == null) {
             CoroutineScope(Dispatchers.IO).launch {
                 val marcador = database.getMarcador(id)
                 withContext(Dispatchers.Main) {
@@ -78,10 +78,10 @@ class MyViewModel : ViewModel() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun updateMarker(id: Int, name: String, descripcion: String, image: Bitmap?){
-        var imageName : String? = null
+    fun updateMarker(id: Int, name: String, descripcion: String, image: Bitmap?) {
+        var imageName: String? = null
         var stream: ByteArrayOutputStream? = null
-        if(image != null){
+        if (image != null) {
             stream = ByteArrayOutputStream()
             image.compress(Bitmap.CompressFormat.PNG, 0, stream)
             imageName =
@@ -91,6 +91,7 @@ class MyViewModel : ViewModel() {
             database.updateMarcador(id, name, descripcion, imageName, stream?.toByteArray())
         }
     }
+
     fun editMarkerName(name: String) {
         _markerName.value = name
     }
@@ -99,7 +100,7 @@ class MyViewModel : ViewModel() {
         _markerDescript.value = image
     }
 
-    fun deleteMarcador(id: Int){
+    fun deleteMarcador(id: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             database.deleteMarcador(id)
             getAllMarcadors()

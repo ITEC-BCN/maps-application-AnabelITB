@@ -6,26 +6,26 @@ import kotlinx.serialization.Serializable
 sealed class Destination {
 
     @Serializable
-    object Permissions: Destination()
+    object Permissions : Destination()
 
     @Serializable
-    object IniciarSesion: Destination()
+    object IniciarSesion : Destination()
 
     @Serializable
-    object Register: Destination()
+    object Register : Destination()
 
     @Serializable
-    object Drawer: Destination()
+    object Drawer : Destination()
 
     @Serializable
-    object Mapa: Destination()
+    object Mapa : Destination()
 
     @Serializable
-    object Marcadores: Destination()
+    object Marcadores : Destination()
 
     @Serializable
     data class MarkerCreation(val latitud: Double, val longitud: Double)
 
     @Serializable
-    data class MarkerDetail(val id:Int)
+    data class MarkerDetail(val id: Int)
 }

@@ -15,13 +15,15 @@ class SupabaseManager {
     private val supabaseKey = BuildConfig.SUPABASE_KEY
     val client = createSupabaseClient(
         supabaseUrl = supabaseUrl,
-        supabaseKey = supabaseKey) {
+        supabaseKey = supabaseKey
+    ) {
         install(Postgrest)
         install(Storage)
-        install(Auth){
+        install(Auth) {
             autoLoadFromStorage = true
         }
     }
+
     suspend fun signUpWithEmail(emailValue: String, passwordValue: String): AuthState {
         try {
             client.auth.signUpWith(Email) {
@@ -33,6 +35,7 @@ class SupabaseManager {
             return AuthState.Error(e.localizedMessage)
         }
     }
+
     suspend fun signInWithEmail(emailValue: String, passwordValue: String): AuthState {
         try {
             client.auth.signInWith(Email) {
@@ -44,10 +47,12 @@ class SupabaseManager {
             return AuthState.Error(e.localizedMessage)
         }
     }
-    fun retrieveCurrentSession(): UserSession?{
+
+    fun retrieveCurrentSession(): UserSession? {
         val session = client.auth.currentSessionOrNull()
         return session
     }
+
     fun refreshSession(): AuthState {
         try {
             client.auth.currentSessionOrNull()
@@ -56,4 +61,4 @@ class SupabaseManager {
             return AuthState.Error(e.localizedMessage)
         }
     }
-    }
+}

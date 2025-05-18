@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.mapsapp.utils.PermissionStatus
 import androidx.compose.runtime.State
 
-class PermissionViewModel: ViewModel() {
+class PermissionViewModel : ViewModel() {
     private val _permissionsStatus = mutableStateOf<Map<String, PermissionStatus>>(emptyMap())
     val permissionsStatus: State<Map<String, PermissionStatus>> = _permissionsStatus
 

@@ -23,13 +23,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mapsapp.utils.PermissionStatus
-
 import com.example.mapsapp.viewmodels.PermissionViewModel
 
 @Composable
@@ -70,7 +67,7 @@ fun PermissionsScreen(navToApp: () -> Unit) {
         modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        if (permissions.all{permissionsStatus[it] == PermissionStatus.Granted}){
+        if (permissions.all { permissionsStatus[it] == PermissionStatus.Granted }) {
             navToApp()
         }
         Spacer(modifier = Modifier.height(16.dp))
