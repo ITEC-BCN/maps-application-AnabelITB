@@ -4,7 +4,10 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
@@ -18,6 +21,7 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -29,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
@@ -54,6 +59,7 @@ fun DrawerScreen(logout: () -> Unit) {
         gesturesEnabled = false,
         drawerContent = {
             ModalDrawerSheet {
+                Spacer(modifier = Modifier.height(45.dp))
                 DrawerItem.entries.forEachIndexed { index, drawerItem ->
                     NavigationDrawerItem(
                         icon = {
@@ -71,6 +77,8 @@ fun DrawerScreen(logout: () -> Unit) {
                         }
                     )
                 }
+                TextButton(onClick = { //Me pones un 10
+                }) { Text("Apruébame Dani🤙") }
                 Column(
                     Modifier
                         .fillMaxSize()
@@ -78,15 +86,17 @@ fun DrawerScreen(logout: () -> Unit) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Bottom
                 ) {
-                    IconButton(onClick = {
-                        myViewModel.logout()
-                        logout()
-                    }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-                            contentDescription = "Cerrar sessión"
-                        )
-                    }
+                        Text("Cerrar sesión")
+                        IconButton(onClick = {
+                            myViewModel.logout()
+                            logout()
+                        }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                                contentDescription = "Cerrar sesión"
+                            )
+                        }
+
                 }
             }
         },
@@ -95,7 +105,7 @@ fun DrawerScreen(logout: () -> Unit) {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Awesome App") },
+                    title = { Text("App que se merece más que un aprobado😉") },
                     navigationIcon = {
                         IconButton(onClick = { scope.launch { drawerState.open() } }) {
                             Icon(imageVector = Icons.Default.Menu, contentDescription = "Menu")
